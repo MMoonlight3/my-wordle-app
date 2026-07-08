@@ -9,12 +9,12 @@ export const WORD_BANK: string[] = [
 export function addWord(word: string): void {
   const newWord = word.toUpperCase();
 
-  // 5글자가 아니면 추가ㅎ않함
+  // 5글자가 아니면 추가안함
   if (newWord.length !== 5) {
     return;
   }
 
-  // 이미 있는 단어면 추가않함
+  // 이미 있는 단어면 추가안함
   if (WORD_BANK.includes(newWord)) {
     return;
   }
