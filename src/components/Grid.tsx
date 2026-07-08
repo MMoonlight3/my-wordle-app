@@ -15,7 +15,7 @@ export default function Grid({ guesses, currentRow }: GridProps) {
                 key={colIndex}
                 className="w-14 h-14 border-2 border-gray-300 flex justify-center items-center text-2xl font-bold uppercase rounded"
               >
-                {/* [서정권] 배경색, 테두리, 글자색 CSS*/}
+                {/* [서정권&문지후] 배경색, 테두리, 글자색 CSS*/}
                 {char}
               </div>
             );

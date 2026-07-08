@@ -14,7 +14,7 @@ export default function Keyboard() {
               key={key}
               className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold p-3 text-sm rounded uppercase transition flex-1 min-w-[32px] h-12 flex justify-center items-center"
             >
-              {/* [서정권] 가상 키보드 버튼 스타일! */}
+              {/* [서정권& 문지후] 가상 키보드 버튼 스타일 */}
               {key}
             </button>
           ))}
