@@ -1,4 +1,4 @@
-// 워들 색상 판정 타입이야
+// 워들 색상 판정 타입
 export type TileStatus = 'GREEN' | 'YELLOW' | 'GRAY';
 
 // 게임 결과 타입
