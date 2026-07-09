@@ -5,9 +5,33 @@ export type TileStatus = 'GREEN' | 'YELLOW' | 'GRAY';
 export type GameResult = "playing" | "win" | "lose";
 
 export const checkWord = (guess: string, solution: string): TileStatus[] => {
-  const result: TileStatus[] = Array(5).fill('GRAY');
+  
+  const result: TileStatus[] = Array(5).fill('GRAY'); // 초기설정 (다섯자리 모두 회색)
+  const targetGuess = guess.toUpperCase()
+  const targetSolution = solution.toUpperCase()
+  const solutionLetterCount: Record<string, number> = {};
 
-  //guess랑 solution 비교해서 result 배열 완성
+  for (let i = 0; i < 5; i++) { // 정답 단어 글자수 카운팅
+    const solLetter = targetSolution[i];
+    solutionLetterCount[solLetter] = (solutionLetterCount[solLetter] || 0) + 1;
+  }
+
+  for (let i = 0; i < 5; i++) { // 자리와 글자가 완벽하게 일치(GREEN)
+    if (targetGuess[i] === targetSolution[i]) {
+      result[i] = 'GREEN';
+      solutionLetterCount[targetGuess[i]]--;
+    }
+  }
+  
+  for (let i = 0; i < 5; i++) {
+    if (result[i] === 'GREEN') continue; // 이미 GREEN 이면 패스(자리가 맞는경우)
+
+    const guessLetter = targetGuess[i]; // 글자 == 자리의 인덱스의 글자
+    if (solutionLetterCount[guessLetter] > 0) { // 글자가 답안에 1개이상 존재한다면
+      result[i] = 'YELLOW'; // YELLOW 표시
+      solutionLetterCount[guessLetter]--; // 글자수 하나 차감
+    }
+  }
 
   return result;
 };
