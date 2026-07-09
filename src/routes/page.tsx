@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import Grid from '../components/Grid';
 import Keyboard from '../components/Keyboard';
 import ResultModal from '../components/ResultModal.tsx';
-// import { WORD_BANK, getRandomWord } from '../api/wordBank'; // [시우 담당] 랜덤 단어 연결 시 주석 해제
+import { randword, findWord } from '../api/wordBank';
+//import { checkGameResult } from '../utils/wordLogic';
 
 export default function IndexPage() {
   // 게임 상태 관리
-  // TODO: [시우 담당] 'WATER' 하드코딩 대신 WORD_BANK에서 랜덤으로 뽑아오기 (예: getRandomWord())
-  const [solution, setSolution] = useState<string>('WATER'); // 임시 정답 (WORD_BANK에도 등록해둠)
+  const [solution] = useState<string>(() => randword()); // [시우 담당] 나중에 랜덤 단어로 교체 --> 교체 완
   const [guesses, setGuesses] = useState<string[]>(Array(6).fill('')); // 유저가 입력한 6개의 단어들
   const [currentRow, setCurrentRow] = useState<number>(0); // 현재 입력 중인 줄 (0~5)
   const [isGameOver, setIsGameOver] = useState<boolean>(false); // 게임 종료 여부
