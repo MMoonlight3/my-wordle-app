@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 interface ResultModalProps {
   isSuccess: boolean;
   solution: string;
+  attemptCount: number; // 몇 번째 시도에서 끝났는지 (1~6)
 }
 
-export default function ResultModal({ isSuccess, solution }: ResultModalProps) {
+export default function ResultModal({ isSuccess, solution, attemptCount }: ResultModalProps) {
   // 모달 창을 닫았는지 여부
   const [isClosed, setIsClosed] = useState(false);
 
@@ -20,18 +21,21 @@ export default function ResultModal({ isSuccess, solution }: ResultModalProps) {
         ) : (
           <h2 className="text-2xl font-bold text-red-500 mb-2">아쉽습니다!</h2>
         )}
-        
+
         <p className="text-gray-600 mb-4">
-          {isSuccess ? '정답을 맞추셨습니다!' : '기회를 모두 소진했습니다.'}
+          {isSuccess ? `${attemptCount}번 만에 맞추셨습니다!` : '기회를 모두 소진했습니다.'}
         </p>
 
-        <div className="bg-gray-100 p-3 rounded font-mono text-2xl font-black tracking-widest mb-4 text-gray-800">
-          {solution}
-        </div>
+        {/* 실패했을 때만 정답 공개 */}
+        {!isSuccess && (
+          <div className="bg-gray-100 p-3 rounded font-mono text-2xl font-black tracking-widest mb-4 text-gray-800">
+            {solution}
+          </div>
+        )}
 
-        {/* 다시하기 없이, 창을 닫고 내 기록을 보러 가는 단일 버튼 */}
-        <button 
-          onClick={() => setIsClosed(true)} 
+        {/* 창을 닫는 단일 버튼 */}
+        <button
+          onClick={() => setIsClosed(true)}
           className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full transition"
         >
           확인

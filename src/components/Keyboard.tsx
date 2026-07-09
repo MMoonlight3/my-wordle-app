@@ -1,4 +1,11 @@
-export default function Keyboard() {
+interface KeyboardProps {
+  // TODO: [정권 담당] page.tsx의 키 입력 처리 함수(handleKeyDown 안의 로직)를 재사용해서
+  // 이 onKeyClick으로 연결해야 화면 키보드를 클릭해도 입력이 됨.
+  // 지금은 물리 키보드(keydown 이벤트)로만 입력 가능하고, 화면 버튼은 눌러도 반응 없음!
+  onKeyClick?: (key: string) => void;
+}
+
+export default function Keyboard({ onKeyClick }: KeyboardProps) {
   const rows = [
     ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
     ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
@@ -12,6 +19,7 @@ export default function Keyboard() {
           {row.map((key) => (
             <button
               key={key}
+              onClick={() => onKeyClick?.(key)}
               className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold p-3 text-sm rounded uppercase transition flex-1 min-w-[32px] h-12 flex justify-center items-center"
             >
               {/* [서정권& 문지후] 가상 키보드 버튼 스타일 */}
