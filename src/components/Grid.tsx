@@ -3,10 +3,22 @@ import { TileStatus } from '../utils/wordLogic';
 interface GridProps {
   guesses: string[];
   currentRow: number;
-  // TODO: [대호 담당] checkWord()로 계산한 결과를 여기로 받아서 칸마다 색을 입혀야 함
-  // 예: statuses={['GREEN', 'GRAY', 'YELLOW', 'GRAY', 'GRAY']} 형태로 한 줄(row)씩 배열
-  statuses?: TileStatus[][];
+  statuses?: TileStatus[][]; // checkWord()로 계산한 결과: 한 줄(row)마다 5칸의 색 판정
 }
+
+// 판정 결과에 따른 타일 색상 클래스
+const getTileColorClass = (status: TileStatus | undefined): string => {
+  switch (status) {
+    case 'GREEN':
+      return 'bg-green-500 border-green-500 text-white';
+    case 'YELLOW':
+      return 'bg-yellow-400 border-yellow-400 text-white';
+    case 'GRAY':
+      return 'bg-gray-400 border-gray-400 text-white';
+    default:
+      return 'bg-white border-gray-300 text-gray-800'; // 아직 제출 안 된 칸
+  }
+};
 
 export default function Grid({ guesses, currentRow, statuses }: GridProps) {
   return (
@@ -15,12 +27,14 @@ export default function Grid({ guesses, currentRow, statuses }: GridProps) {
         <div key={rowIndex} className="grid grid-cols-5 gap-2">
           {Array(5).fill('').map((_, colIndex) => {
             const char = guess[colIndex] || '';
-            // TODO: [서정권&문지후 담당] statuses?.[rowIndex]?.[colIndex] 값(GREEN/YELLOW/GRAY)에 따라
-            // 배경색(className)을 다르게 입혀야 함. 지금은 항상 기본 테두리색만 적용됨.
+            // 이미 제출된 줄(rowIndex < currentRow)이거나, 제출과 동시에 채워진 현재 줄만 색이 있음
+            const status = statuses?.[rowIndex]?.[colIndex];
+            const colorClass = getTileColorClass(status);
+
             return (
               <div
                 key={colIndex}
-                className="w-14 h-14 border-2 border-gray-300 flex justify-center items-center text-2xl font-bold uppercase rounded"
+                className={`w-14 h-14 border-2 flex justify-center items-center text-2xl font-bold uppercase rounded transition-colors ${colorClass}`}
               >
                 {char}
               </div>

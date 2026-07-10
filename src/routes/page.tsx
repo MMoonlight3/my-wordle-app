@@ -3,12 +3,13 @@ import Grid from '../components/Grid';
 import Keyboard from '../components/Keyboard';
 import ResultModal from '../components/ResultModal.tsx';
 import { randword, findWord } from '../api/wordBank';
-//import { checkGameResult } from '../utils/wordLogic';
+import { checkWord, TileStatus } from '../utils/wordLogic';
 
 export default function IndexPage() {
   // 게임 상태 관리
   const [solution] = useState<string>(() => randword()); // [시우 담당] 나중에 랜덤 단어로 교체 --> 교체 완
   const [guesses, setGuesses] = useState<string[]>(Array(6).fill('')); // 유저가 입력한 6개의 단어들
+  const [statuses, setStatuses] = useState<TileStatus[][]>(Array(6).fill([])); // 각 줄의 칸별 색깔 판정 결과
   const [currentRow, setCurrentRow] = useState<number>(0); // 현재 입력 중인 줄 (0~5)
   const [isGameOver, setIsGameOver] = useState<boolean>(false); // 게임 종료 여부
   const [isSuccess, setIsSuccess] = useState<boolean>(false); // 성공 여부
@@ -26,7 +27,15 @@ export default function IndexPage() {
           alert('5글자를 모두 입력해주세요!');
           return;
         }
-        
+
+        // 이번 줄의 칸별 색깔(초록/노랑/회색) 계산해서 저장
+        const rowResult = checkWord(currentGuess, solution);
+        setStatuses((prev) => {
+          const newStatuses = [...prev];
+          newStatuses[currentRow] = rowResult;
+          return newStatuses;
+        });
+
         // 정답 확인 로직 (대호가 만든 판정 함수를 나중에 여기 연결할 예정)
         if (currentGuess === solution) {
           setIsSuccess(true);
@@ -78,7 +87,7 @@ export default function IndexPage() {
 
       {/* 메인 게임판 [정권 담당 파일 연결] */}
       <main className="flex-grow flex items-center justify-center my-4">
-        <Grid guesses={guesses} currentRow={currentRow} />
+        <Grid guesses={guesses} currentRow={currentRow} statuses={statuses} />
       </main>
 
       {/* 가상 키보드 [정권 담당 파일 연결] */}
