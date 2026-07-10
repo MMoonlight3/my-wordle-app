@@ -13,7 +13,7 @@ export default function IndexPage() {
   const [currentRow, setCurrentRow] = useState<number>(0); // 현재 입력 중인 줄 (0~5)
   const [isGameOver, setIsGameOver] = useState<boolean>(false); // 게임 종료 여부
   const [isSuccess, setIsSuccess] = useState<boolean>(false); // 성공 여부
-  
+
   // [선우 & 보민 공동 작업 영역] 키보드 타이핑 입력 처리
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
