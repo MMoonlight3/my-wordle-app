@@ -13,25 +13,6 @@ export default function IndexPage() {
   const [currentRow, setCurrentRow] = useState<number>(0); // 현재 입력 중인 줄 (0~5)
   const [isGameOver, setIsGameOver] = useState<boolean>(false); // 게임 종료 여부
   const [isSuccess, setIsSuccess] = useState<boolean>(false); // 성공 여부
-
-  const keyboardStatuses = guesses.reduce<Record<string, TileStatus>>((acc, guess, rowIndex) => {
-    const rowStatuses = statuses[rowIndex];
-    if (!rowStatuses || rowStatuses.length === 0) return acc;
-
-    guess.split('').forEach((letter, colIndex) => {
-      const status = rowStatuses[colIndex];
-      if (!status) return;
-
-      const normalizedLetter = letter.toUpperCase();
-      const previousStatus = acc[normalizedLetter];
-
-      if (!previousStatus || status === 'GREEN' || (previousStatus !== 'GREEN' && status === 'YELLOW')) {
-        acc[normalizedLetter] = status;
-      }
-    });
-
-    return acc;
-  }, {});
   
   // [선우 & 보민 공동 작업 영역] 키보드 타이핑 입력 처리
   useEffect(() => {
@@ -111,7 +92,7 @@ export default function IndexPage() {
 
       {/* 가상 키보드 [정권 담당 파일 연결] */}
       <footer className="w-full max-w-lg px-4">
-        <Keyboard letterStatuses={keyboardStatuses} />
+        <Keyboard />
       </footer>
 
       {/* 결과 팝업창 [시우 & 정권 담당 파일 연결] */}
