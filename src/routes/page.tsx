@@ -19,7 +19,7 @@ export default function IndexPage() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isGameOver) return;
 
-      const currentGuess = guesses[currentRow];
+      const currentGuess = guesses[currentRow] ?? '';
 
       // 1. 엔터키를 눌렀을 때 (단어 제출)
       if (e.key === 'Enter') {
@@ -57,7 +57,7 @@ export default function IndexPage() {
       if (e.key === 'Backspace') {
         setGuesses((prev) => {
           const newGuesses = [...prev];
-          newGuesses[currentRow] = currentGuess.slice(0, -1);
+          newGuesses[currentRow] = (newGuesses[currentRow] ?? '').slice(0, -1);
           return newGuesses;
         });
         return;
@@ -66,10 +66,10 @@ export default function IndexPage() {
       // 3. 알파벳을 눌렀을 때 (글자 추가, 5글자 제한)
       if (/^[a-zA-Z]$/.test(e.key)) {
         if (currentGuess.length >= 5) return;
-        
+
         setGuesses((prev) => {
           const newGuesses = [...prev];
-          newGuesses[currentRow] = currentGuess + e.key.toUpperCase();
+          newGuesses[currentRow] = (newGuesses[currentRow] ?? '') + e.key.toUpperCase();
           return newGuesses;
         });
       }
