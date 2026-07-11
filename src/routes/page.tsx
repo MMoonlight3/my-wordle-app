@@ -79,6 +79,25 @@ export default function IndexPage() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentRow, guesses, isGameOver, solution]);
 
+  // [문지후] 지금까지 입력된 단어들과 판정 결과를 훑어서 알파벳별 최고 상태 계산
+  const letterStatuses = guesses.reduce<Record<string, TileStatus>>((acc, guess, rowIndex) => {
+    const rowStatus = statuses[rowIndex];
+    if (!rowStatus || rowStatus.length === 0) return acc;
+
+    guess.split('').forEach((letter, colIndex) => {
+      const status = rowStatus[colIndex];
+      if (!status) return;
+
+      const priority: Record<TileStatus, number> = { GREEN: 3, YELLOW: 2, GRAY: 1 };
+      const current = acc[letter];
+      if (!current || priority[status] > priority[current]) {
+        acc[letter] = status;
+      }
+    });
+
+    return acc;
+  }, {});
+
   return (
     <div className="flex flex-col items-center justify-between min-h-screen bg-gray-50 py-6 font-sans">
       <header className="border-b border-gray-200 w-full text-center pb-2">
@@ -92,7 +111,7 @@ export default function IndexPage() {
 
       {/* 가상 키보드 [정권 담당 파일 연결] */}
       <footer className="w-full max-w-lg px-4">
-        <Keyboard />
+        <Keyboard letterStatuses={letterStatuses} />
       </footer>
 
       {/* 결과 팝업창 [시우 & 정권 담당 파일 연결] */}
